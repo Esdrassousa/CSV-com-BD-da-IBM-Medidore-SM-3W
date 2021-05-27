@@ -28,9 +28,11 @@ databaseName = 'sm3wid11'
 
 result11 = result_collection['5/25/2021, 00:08:00' : '5/25/2021, 23:59:59' ]
 
-with open('dados_Equipamento_Id_11.csv', 'w', newline='') as file:
+with open('dados_Equipamento_Id_11_27-05-2021.csv', 'w', newline='') as file:
     writer = csv.writer(file,delimiter=";")
-    writer.writerow(["Data", "Potência Ativa fase A", "Potência Ativa fase B"
+    # fieldnames = ["pa", "pb", "pc"]
+    # writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+    writer.writerow(["Data","Hora", "Potência Ativa fase A", "Potência Ativa fase B"
                      ,"Potência Ativa fase C", "Potência Ativa Total",
                      "Potência Reativa fase A","Potência Reativa fase B", 
                      "Potência Reativa fase C","Potência Reativa Total",
@@ -40,8 +42,16 @@ with open('dados_Equipamento_Id_11.csv', 'w', newline='') as file:
                      "Corrente fase A","Corrente fase B","Corrente fase C",
                      "Corrente Total","Fator de Potência Fase A",
                      "Fator de Potência Fase B","Fator de Potência Fase C",
-                     "Fator de Potência Total"])
+                     "Fator de Potência Total","Consu Pot Ativa Fase A",
+                     "Consu Pot Ativa Fase B", "Consu Pot Ativa Fase C" ,
+                     "Consu Pot Ativa Total" ,"Consu Pot Reativa Fase A",
+                     "Consu Pot Reativa Fase B", "Consu Pot Reativa Fase C",
+                     "Consu Pot Reativa Total","Angulo Fase AB",
+                     "Angulo Fase AC", "Angulo Fase BC",
+                     "Temperatura"])
     for  i in range(len(result11)):
+        
+     try:
         separadados = result11[i]
         separaemDoc = separadados['doc']
         
@@ -70,16 +80,37 @@ with open('dados_Equipamento_Id_11.csv', 'w', newline='') as file:
         FP_B = Pega_primeiro_separaDadosDoc['pfb'].replace('.',',')
         FP_C = Pega_primeiro_separaDadosDoc['pfc'].replace('.',',')
         FP_T = Pega_primeiro_separaDadosDoc['pft'].replace('.',',')
+        Frequencia = Pega_primeiro_separaDadosDoc['freq'].replace('.',',')
+        Cons_Pot_ATV_A = Pega_primeiro_separaDadosDoc['epa'].replace('.',',')
+        Cons_Pot_ATV_B = Pega_primeiro_separaDadosDoc['epb'].replace('.',',')
+        Cons_Pot_ATV_C = Pega_primeiro_separaDadosDoc['epc'].replace('.',',')
+        Cons_Pot_ATV_T = Pega_primeiro_separaDadosDoc['ept'].replace('.',',')
+        Cons_Pot_Rea_A = Pega_primeiro_separaDadosDoc['eqa'].replace('.',',')
+        Cons_Pot_Rea_B = Pega_primeiro_separaDadosDoc['eqb'].replace('.',',')
+        Cons_Pot_Rea_C = Pega_primeiro_separaDadosDoc['eqc'].replace('.',',')
+        Cons_Pot_Rea_T = Pega_primeiro_separaDadosDoc['eqt'].replace('.',',')
+        Angulo_AB = Pega_primeiro_separaDadosDoc['yuaub'].replace('.',',')
+        Angulo_AC = Pega_primeiro_separaDadosDoc['yuauc'].replace('.',',')
+        Angulo_BC = Pega_primeiro_separaDadosDoc['yubuc'].replace('.',',')
+        Temp = Pega_primeiro_separaDadosDoc['tpsd'].replace('.',',')
         separaDatas = separaemDoc['data']
         separraData_e_Horas = separaDatas.split(',')
         date = datetime.strptime(separraData_e_Horas[0], '%m/%d/%Y').date()
         data_em_texto = date.strftime('%d/%m/%Y')
         datasSetadas = pd.to_datetime(separaDatas)
-        writer.writerow([(data_em_texto+separraData_e_Horas[1]),
+        writer.writerow([data_em_texto,separraData_e_Horas[1],
                          PotAti_A, PotAti_B, PotAti_C,PotAti_T,
                          PotRea_A, PotRea_B, PotRea_C,PotRea_T,
                          PotApa_A,PotApa_B,PotApa_C,PotApa_T,
                          TenFase_A,TenFase_B,TenFase_C,
                          CorreFase_A,CorreFase_B,CorreFase_C,CorreFase_T,
-                         FP_A,FP_B,FP_C,FP_T])
-
+                         FP_A,FP_B,FP_C,FP_T,Frequencia,
+                         Cons_Pot_ATV_A,Cons_Pot_ATV_B,Cons_Pot_ATV_C,
+                         Cons_Pot_ATV_T, Cons_Pot_Rea_A, Cons_Pot_Rea_B,
+                         Cons_Pot_Rea_C, Cons_Pot_Rea_T,Angulo_AB,
+                         Angulo_AC,Angulo_BC,Temp])
+  
+     except :
+      print('error')
+     finally:
+         pass
