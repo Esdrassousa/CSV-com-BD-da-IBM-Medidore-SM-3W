@@ -28,11 +28,11 @@ databaseName = 'sm3wid11'
 
 result11 = result_collection['5/25/2021, 00:08:00' : '5/25/2021, 23:59:59' ]
 
-with open('dados_Equipamento_Id_11_27-05-2021.csv', 'w', newline='') as file:
+with open('EMpresa_Id12_03-06-2021_07_06_2021.csv', 'w', newline='') as file:
     writer = csv.writer(file,delimiter=";")
     # fieldnames = ["pa", "pb", "pc"]
     # writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    writer.writerow(["Data","Hora", "Potência Ativa fase A", "Potência Ativa fase B"
+    writer.writerow(["Data",'Hora',"Horas", "Potência Ativa fase A", "Potência Ativa fase B"
                      ,"Potência Ativa fase C", "Potência Ativa Total",
                      "Potência Reativa fase A","Potência Reativa fase B", 
                      "Potência Reativa fase C","Potência Reativa Total",
@@ -42,7 +42,9 @@ with open('dados_Equipamento_Id_11_27-05-2021.csv', 'w', newline='') as file:
                      "Corrente fase A","Corrente fase B","Corrente fase C",
                      "Corrente Total","Fator de Potência Fase A",
                      "Fator de Potência Fase B","Fator de Potência Fase C",
-                     "Fator de Potência Total","Consu Pot Ativa Fase A",
+                     "Fator de Potência Total","Angulo Tensao Corrente A",
+                     "Angulo Tensao Corrente B", "Angulo Tensao Corrente C",
+                     "Frequencia","Consu Pot Ativa Fase A",
                      "Consu Pot Ativa Fase B", "Consu Pot Ativa Fase C" ,
                      "Consu Pot Ativa Total" ,"Consu Pot Reativa Fase A",
                      "Consu Pot Reativa Fase B", "Consu Pot Reativa Fase C",
@@ -80,6 +82,9 @@ with open('dados_Equipamento_Id_11_27-05-2021.csv', 'w', newline='') as file:
         FP_B = Pega_primeiro_separaDadosDoc['pfb'].replace('.',',')
         FP_C = Pega_primeiro_separaDadosDoc['pfc'].replace('.',',')
         FP_T = Pega_primeiro_separaDadosDoc['pft'].replace('.',',')
+        AGL_Tens_Corre_A = Pega_primeiro_separaDadosDoc['pga'].replace('.',',')
+        AGL_Tens_Corre_B = Pega_primeiro_separaDadosDoc['pgb'].replace('.',',')
+        AGL_Tens_Corre_C = Pega_primeiro_separaDadosDoc['pgc'].replace('.',',')
         Frequencia = Pega_primeiro_separaDadosDoc['freq'].replace('.',',')
         Cons_Pot_ATV_A = Pega_primeiro_separaDadosDoc['epa'].replace('.',',')
         Cons_Pot_ATV_B = Pega_primeiro_separaDadosDoc['epb'].replace('.',',')
@@ -98,19 +103,22 @@ with open('dados_Equipamento_Id_11_27-05-2021.csv', 'w', newline='') as file:
         date = datetime.strptime(separraData_e_Horas[0], '%m/%d/%Y').date()
         data_em_texto = date.strftime('%d/%m/%Y')
         datasSetadas = pd.to_datetime(separaDatas)
-        writer.writerow([data_em_texto,separraData_e_Horas[1],
+        separaHora_Hora = separraData_e_Horas[1].split(':')
+        writer.writerow([data_em_texto,separaHora_Hora[0],separraData_e_Horas[1],
                          PotAti_A, PotAti_B, PotAti_C,PotAti_T,
                          PotRea_A, PotRea_B, PotRea_C,PotRea_T,
                          PotApa_A,PotApa_B,PotApa_C,PotApa_T,
                          TenFase_A,TenFase_B,TenFase_C,
                          CorreFase_A,CorreFase_B,CorreFase_C,CorreFase_T,
-                         FP_A,FP_B,FP_C,FP_T,Frequencia,
+                         FP_A,FP_B,FP_C,FP_T,AGL_Tens_Corre_A,
+                         AGL_Tens_Corre_B,AGL_Tens_Corre_C,Frequencia,
                          Cons_Pot_ATV_A,Cons_Pot_ATV_B,Cons_Pot_ATV_C,
                          Cons_Pot_ATV_T, Cons_Pot_Rea_A, Cons_Pot_Rea_B,
                          Cons_Pot_Rea_C, Cons_Pot_Rea_T,Angulo_AB,
                          Angulo_AC,Angulo_BC,Temp])
-  
+   
      except :
       print('error')
      finally:
          pass
+
